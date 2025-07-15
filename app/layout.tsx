@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Paaster - Secure Text and File Sharing",
+  title: "Paaster – Secure Text and File Sharing",
   description: "End-to-end encrypted text and file sharing platform",
   icons: {
     icon: "/logo.svg",

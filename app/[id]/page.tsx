@@ -43,6 +43,12 @@ export default function SharePage() {
     }
   }, []);
 
+  useEffect(() => {
+    if (data && data.title) {
+      document.title = `${data.title} - Paaster – Secure Text and File Sharing`;
+    }
+  }, [data]);
+
   const decryptData = useCallback(
     async (content: Content, fragment: string, password?: string) => {
       if (content.text) {
