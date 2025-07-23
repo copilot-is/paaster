@@ -1,5 +1,6 @@
 import "./globals.css";
 
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
@@ -44,10 +45,9 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Header />
-          <div className="flex-1 bg-accent p-4">
-            {children}
-            <Toaster position="top-center" richColors />
-          </div>
+          <div className="flex-1 bg-accent p-4">{children}</div>
+          <Toaster position="top-center" richColors />
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
