@@ -1,6 +1,5 @@
 "use client";
 
-import { Editor } from "@monaco-editor/react";
 import { LoaderCircleIcon, PaperclipIcon } from "lucide-react";
 import { notFound, useParams } from "next/navigation";
 import { useTheme } from "next-themes";
@@ -8,10 +7,13 @@ import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import DecryptionFailed from "@/components/decryption-failed";
+import { Editor } from "@/components/editor";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import {
   AlertDialog,
+  AlertDialogAction,
   AlertDialogContent,
+  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
@@ -20,7 +22,7 @@ import { Input } from "@/components/ui/input";
 import { decryptContent } from "@/lib/crypto";
 import { Content } from "@/lib/types";
 
-export default function SharePage() {
+export default function Page() {
   const { id } = useParams();
   const { theme } = useTheme();
   const [data, setData] = useState<Content>();
@@ -128,7 +130,7 @@ export default function SharePage() {
   );
 
   return (
-    <div className="h-full bg-background p-6 flex flex-col rounded-lg shadow-lg">
+    <>
       {error && <DecryptionFailed>{error}</DecryptionFailed>}
       {!error && loading && (
         <div className="h-full flex items-center justify-center">
@@ -136,7 +138,7 @@ export default function SharePage() {
         </div>
       )}
       {!error && !loading && !isOpenAlertDialog && data && (
-        <>
+        <div className="bg-background p-6 flex flex-col rounded-lg shadow-sm">
           <Alert className="text-center mb-4 rounded-sm bg-muted border-0">
             <AlertTitle>
               {data.burnAfterRead &&
@@ -148,20 +150,13 @@ export default function SharePage() {
                 ).toLocaleString()}`}
             </AlertTitle>
           </Alert>
-          <div className="flex-1 rounded-sm dark:bg-[#1e1e1e]">
-            <Editor
-              loading=""
-              theme={theme === "dark" ? "vs-dark" : "light"}
-              options={{
-                readOnly: true,
-                contextmenu: false,
-                minimap: { enabled: false },
-              }}
-              className="border rounded-sm overflow-hidden p-1 py-3 h-full"
-              language={data.format || "plaintext"}
-              value={textContent}
-            />
-          </div>
+          <Editor
+            className="h-110"
+            theme={theme}
+            language={data?.format}
+            value={textContent}
+            readOnly
+          />
           {data.attachment && (
             <div className="mt-4">
               <div className="p-4 border-1 rounded-sm flex flex-col items-center justify-center">
@@ -184,7 +179,7 @@ export default function SharePage() {
               </div>
             </div>
           )}
-        </>
+        </div>
       )}
       <AlertDialog open={isOpenAlertDialog}>
         <AlertDialogContent>
@@ -192,10 +187,11 @@ export default function SharePage() {
             <AlertDialogTitle>Password</AlertDialogTitle>
           </AlertDialogHeader>
           <div className="px-px">
-            <Input onChange={(e) => setPassword(e.target.value)} />
+            <Input autoFocus onChange={(e) => setPassword(e.target.value)} />
           </div>
-          <div className="text-right">
-            <Button
+          <AlertDialogFooter>
+            <AlertDialogAction
+              disabled={!password}
               onClick={async () => {
                 if (data && fragment && password) {
                   try {
@@ -208,10 +204,10 @@ export default function SharePage() {
               }}
             >
               Submit
-            </Button>
-          </div>
+            </AlertDialogAction>
+          </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </>
   );
 }

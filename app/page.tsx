@@ -1,6 +1,5 @@
 "use client";
 
-import { Editor } from "@monaco-editor/react";
 import {
   LoaderCircleIcon,
   PaperclipIcon,
@@ -13,6 +12,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { Editor } from "@/components/editor";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -144,19 +144,14 @@ export default function Page() {
   };
 
   return (
-    <div className="h-full bg-background p-6 flex flex-col rounded-lg shadow-lg">
-      <div className="mb-4 rounded-sm dark:bg-[#1e1e1e]">
+    <div className="bg-background p-6 flex flex-col rounded-lg shadow-sm">
+      <div className="mb-4">
         <Editor
-          loading=""
-          theme={theme === "dark" ? "vs-dark" : "light"}
-          height="35vh"
+          className="h-70"
+          theme={theme}
           language={format}
-          options={{
-            contextmenu: false,
-            minimap: { enabled: false },
-          }}
-          className="border rounded-sm overflow-hidden p-1 py-3"
-          onChange={(value) => setText(value)}
+          value={text}
+          onChange={(value: string) => setText(value)}
         />
       </div>
       <div className="mb-4">

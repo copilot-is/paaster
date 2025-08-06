@@ -38,14 +38,14 @@ export default function RootLayout({
     <html className="h-full" suppressHydrationWarning>
       <body
         className={cn(
-          "h-full scroll-smooth antialiased flex flex-col",
+          "h-full scroll-smooth antialiased flex flex-col bg-accent",
           geistSans.variable,
           geistMono.variable
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Header />
-          <div className="flex-1 bg-accent p-4">{children}</div>
+          <div className="flex-1 p-4">{children}</div>
           <Toaster position="top-center" richColors />
           <Analytics />
         </ThemeProvider>
