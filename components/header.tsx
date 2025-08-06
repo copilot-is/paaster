@@ -44,7 +44,7 @@ export default function Header() {
   };
 
   return (
-    <header className="w-full border-b bg-background/80 backdrop-blur sticky top-0 z-50">
+    <header className="w-full border-b bg-background/80 backdrop-blur sticky top-0 z-50 dark:border-b-0">
       <div className="w-full flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2 text-primary">
           <Image

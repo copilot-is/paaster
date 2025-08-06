@@ -144,7 +144,7 @@ export default function Page() {
   };
 
   return (
-    <div className="bg-background p-2 sm:p-4 flex flex-col rounded-lg shadow-sm">
+    <div className="bg-card p-2 sm:p-4 flex flex-col rounded-lg shadow-sm">
       <div className="mb-4">
         <Editor
           className="h-70"
