@@ -45,7 +45,7 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Header />
-          <div className="flex-1 p-4">{children}</div>
+          <div className="flex-1 p-1.5 sm:p-4">{children}</div>
           <Toaster position="top-center" richColors />
           <Analytics />
         </ThemeProvider>
