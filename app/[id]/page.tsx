@@ -138,7 +138,7 @@ export default function Page() {
         </div>
       )}
       {!error && !loading && !isOpenAlertDialog && data && (
-        <div className="bg-background p-2 sm:p-6 flex flex-col rounded-lg shadow-sm">
+        <div className="bg-background p-2 sm:p-4 flex flex-col rounded-lg shadow-sm">
           <Alert className="text-center mb-4 rounded-sm bg-muted border-0">
             <AlertTitle>
               {data.burnAfterRead &&

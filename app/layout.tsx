@@ -1,7 +1,7 @@
 import "./globals.css";
 
 import { Analytics } from "@vercel/analytics/next";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 
@@ -18,6 +18,18 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+  width: "device-width",
+  initialScale: 1,
+  minimumScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export const metadata: Metadata = {
   title: "Paaster – Secure Text and File Sharing",
@@ -45,7 +57,7 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Header />
-          <div className="flex-1 p-1.5 sm:p-4">{children}</div>
+          <div className="flex-1 p-1.5 sm:p-3">{children}</div>
           <Toaster position="top-center" richColors />
           <Analytics />
         </ThemeProvider>
