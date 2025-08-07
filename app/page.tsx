@@ -230,7 +230,12 @@ export default function Page() {
           <Label className="mb-2">Expires</Label>
           <Select
             value={expires}
-            onValueChange={(value) => setExpires(value)}
+            onValueChange={(value) => {
+              if (value === "b") {
+                setBurnAfterRead(true);
+              }
+              setExpires(value);
+            }}
             disabled={burnAfterRead || submitting}
           >
             <SelectTrigger className="w-full">
