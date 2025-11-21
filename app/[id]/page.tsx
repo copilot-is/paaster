@@ -213,7 +213,7 @@ export default function Page() {
       <AlertDialog open={isOpenAlertDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Password Protected</AlertDialogTitle>
+            <AlertDialogTitle>Password</AlertDialogTitle>
           </AlertDialogHeader>
           <div className="py-4">
             <Input

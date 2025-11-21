@@ -76,28 +76,12 @@ export default function Header() {
             asChild
             variant="ghost"
             size="sm"
-            className="hidden sm:flex gap-2 text-muted-foreground hover:text-foreground rounded-full px-4"
+            className="flex gap-2 text-muted-foreground hover:text-foreground rounded-full px-2 sm:px-4"
           >
             <Link href="/">
               <PlusIcon className="size-4" />
-              <span className="font-medium">New Paste</span>
+              <span className="font-medium hidden sm:inline">New Paste</span>
             </Link>
-          </Button>
-          <div className="h-4 w-px bg-border/50 mx-1 hidden sm:block" />
-          <Button
-            asChild
-            variant="ghost"
-            size="icon"
-            aria-label="GitHub"
-            className="rounded-full text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <a
-              href="https://github.com/copilot-is/paaster"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <GithubIcon className="size-5" />
-            </a>
           </Button>
           <ThemeToggle />
         </nav>

@@ -351,7 +351,7 @@ export default function Page() {
         </div>
       </div>
       <AlertDialog open={isOpenAlertDialog && !!shareLink}>
-        <AlertDialogContent>
+        <AlertDialogContent className="max-w-lg w-[calc(100%-2rem)] sm:w-full">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-right">
               <Button
@@ -365,9 +365,13 @@ export default function Page() {
                 <XIcon className="size-3.5 text-muted-foreground" />
               </Button>
             </AlertDialogTitle>
-            <div className="flex items-start justify-between p-3 gap-3 w-full mb-4">
-              <div className="flex-1 grid w-full gap-3">
-                <Textarea className="w-full h-20" value={shareLink} readOnly />
+            <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4 w-full mb-4">
+              <div className="flex-1 grid w-full gap-3 order-2 sm:order-1">
+                <Textarea
+                  className="w-full h-20 text-sm"
+                  value={shareLink}
+                  readOnly
+                />
                 <Button
                   onClick={() => {
                     if (shareLink && navigator.clipboard) {
@@ -381,8 +385,12 @@ export default function Page() {
                   Copy link
                 </Button>
               </div>
-              <div className="flex-none">
-                <QRCodeSVG value={shareLink || ""} size={128} />
+              <div className="flex-none order-1 sm:order-2">
+                <QRCodeSVG
+                  value={shareLink || ""}
+                  size={120}
+                  className="sm:w-32 sm:h-32"
+                />
               </div>
             </div>
           </AlertDialogHeader>

@@ -5,6 +5,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 
+import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
@@ -58,6 +59,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Header />
           <div className="flex-1 p-1.5 sm:p-3">{children}</div>
+          <Footer />
           <Toaster position="top-center" richColors />
           <Analytics />
         </ThemeProvider>
