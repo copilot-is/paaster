@@ -1,6 +1,12 @@
 "use client";
 
-import { GithubIcon, MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
+import {
+  GithubIcon,
+  MonitorIcon,
+  MoonIcon,
+  PlusIcon,
+  SunIcon,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
@@ -9,6 +15,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 export default function Header() {
+  // Theme toggle component
   const ThemeToggle = () => {
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
@@ -26,6 +33,7 @@ export default function Header() {
         variant="ghost"
         size="icon"
         aria-label="Theme"
+        className="rounded-full text-muted-foreground hover:text-foreground transition-colors"
         onClick={() => {
           if (theme === "dark") setTheme("light");
           else if (theme === "light") setTheme("system");
@@ -33,43 +41,62 @@ export default function Header() {
         }}
       >
         {theme === "dark" ? (
-          <SunIcon />
+          <SunIcon className="size-5" />
         ) : theme === "light" ? (
-          <MoonIcon />
+          <MoonIcon className="size-5" />
         ) : (
-          <MonitorIcon />
+          <MonitorIcon className="size-5" />
         )}
       </Button>
     );
   };
 
   return (
-    <header className="w-full border-b bg-background/80 backdrop-blur sticky top-0 z-50 dark:border-b-0">
-      <div className="w-full flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2 text-primary">
-          <Image
-            src="/logo.svg"
-            alt="Logo"
-            width={28}
-            height={28}
-            className="dark:invert"
-          />
-          <span className="font-medium text-2xl">Paaster</span>
+    <header className="w-full shadow-sm bg-gradient-to-b from-background/95 to-background/75 backdrop-blur-md sticky top-0 z-50 supports-[backdrop-filter]:bg-background/60">
+      <div className="max-w-6xl mx-auto w-full flex h-14 items-center justify-between px-4 lg:px-0">
+        <Link
+          href="/"
+          className="flex items-center gap-2.5 hover:opacity-80 transition-opacity group"
+        >
+          <div className="relative">
+            <Image
+              src="/logo.svg"
+              alt="Logo"
+              width={24}
+              height={24}
+              className="dark:invert transition-transform group-hover:scale-105"
+            />
+          </div>
+          <span className="font-semibold text-lg tracking-tight text-[#555555]">
+            Paaster
+          </span>
         </Link>
-        <nav className="flex items-center gap-2 text-sm font-semibold mr-1">
+        <nav className="flex items-center gap-2">
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="hidden sm:flex gap-2 text-muted-foreground hover:text-foreground rounded-full px-4"
+          >
+            <Link href="/">
+              <PlusIcon className="size-4" />
+              <span className="font-medium">New Paste</span>
+            </Link>
+          </Button>
+          <div className="h-4 w-px bg-border/50 mx-1 hidden sm:block" />
           <Button
             asChild
             variant="ghost"
             size="icon"
             aria-label="GitHub"
-            className="text-xl"
+            className="rounded-full text-muted-foreground hover:text-foreground transition-colors"
           >
             <a
               href="https://github.com/copilot-is/paaster"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <GithubIcon />
+              <GithubIcon className="size-5" />
             </a>
           </Button>
           <ThemeToggle />

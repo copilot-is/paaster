@@ -144,174 +144,212 @@ export default function Page() {
   };
 
   return (
-    <div className="bg-card p-2 sm:p-4 flex flex-col rounded-lg shadow-sm">
-      <div className="mb-4">
-        <Editor
-          className="h-70"
-          theme={theme}
-          language={format}
-          value={text}
-          onChange={(value: string) => setText(value)}
-        />
-      </div>
-      <div className="mb-4">
-        {file ? (
-          <div className="p-4 mb-4 border-2 border-dashed rounded-sm flex items-center justify-center gap-2">
-            <div className="flex items-center gap-1">
-              <PaperclipIcon className="size-4 text-muted-foreground" />
-              {file.name}
-              <div className="text-muted-foreground">
-                ({(file.size / (1024 * 1024)).toFixed(2)} MB)
+    <div className="max-w-6xl mx-auto w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="lg:col-span-3 space-y-6">
+          <div className="bg-card p-4 sm:p-6 flex flex-col rounded-xl shadow-sm border border-border/50">
+            <div className="mb-6">
+              <Editor
+                className="h-96 rounded-md border border-border/50 overflow-hidden"
+                theme={theme}
+                language={format}
+                value={text}
+                onChange={(value: string) => setText(value)}
+              />
+            </div>
+            <div>
+              {file ? (
+                <div className="p-4 border border-border/50 rounded-xl bg-muted/30 flex items-center justify-between gap-4 transition-colors hover:bg-muted/50">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-background rounded-full shadow-sm">
+                      <PaperclipIcon className="size-5 text-primary" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="font-medium text-sm">{file.name}</span>
+                      <span className="text-muted-foreground text-xs">
+                        {(file.size / (1024 * 1024)).toFixed(2)} MB
+                      </span>
+                    </div>
+                  </div>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="size-8 hover:bg-destructive/10 hover:text-destructive rounded-full"
+                    title="Remove file"
+                    onClick={handleRemoveFile}
+                  >
+                    <XIcon className="size-4" />
+                  </Button>
+                </div>
+              ) : (
+                <div
+                  className="p-8 border-2 border-dashed border-border/50 rounded-xl relative flex flex-col items-center justify-center gap-2 transition-colors hover:bg-muted/30 hover:border-primary/50"
+                  onDrop={handleDrop}
+                  onDragOver={(e) => e.preventDefault()}
+                >
+                  <input
+                    type="file"
+                    disabled={submitting}
+                    onChange={handleFileChange}
+                    className="w-full h-full absolute inset-0 opacity-0 cursor-pointer"
+                  />
+                  <div className="p-3 bg-muted/50 rounded-full mb-2">
+                    <PlusIcon className="size-6 text-muted-foreground" />
+                  </div>
+                  <div className="font-medium text-sm">
+                    Drop file here or click to upload
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Max file size: 50MB
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="lg:col-span-1 space-y-6">
+          <div className="bg-card p-4 sm:p-5 rounded-xl shadow-sm border border-border/50 space-y-5">
+            <h3 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground mb-2">
+              Settings
+            </h3>
+
+            <div className="space-y-2">
+              <Label className="text-xs font-medium" htmlFor="title">
+                Title{" "}
+                <span className="text-muted-foreground font-normal">
+                  (optional)
+                </span>
+              </Label>
+              <Input
+                id="title"
+                type="text"
+                disabled={submitting}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-xs font-medium">Format</Label>
+              <Select
+                defaultValue={format}
+                onValueChange={(value) => setFormat(value)}
+                disabled={submitting}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select a format" />
+                </SelectTrigger>
+                <SelectContent>
+                  {editorLanguages.map((l) => (
+                    <SelectItem key={l} value={l}>
+                      {l}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-xs font-medium">Expires</Label>
+              <Select
+                value={expires}
+                onValueChange={(value) => {
+                  if (value === "b") {
+                    setBurnAfterRead(true);
+                  }
+                  setExpires(value);
+                }}
+                disabled={burnAfterRead || submitting}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select expiration" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="b">Burn after read</SelectItem>
+                  <SelectItem value="10m">10 minutes</SelectItem>
+                  <SelectItem value="30m">30 minutes</SelectItem>
+                  <SelectItem value="1h">1 hour</SelectItem>
+                  <SelectItem value="6h">6 hours</SelectItem>
+                  <SelectItem value="12h">12 hours</SelectItem>
+                  <SelectItem value="1d">1 day</SelectItem>
+                  <SelectItem value="3d">3 days</SelectItem>
+                  <SelectItem value="7d">7 days</SelectItem>
+                </SelectContent>
+              </Select>
+              <div className="flex items-center gap-2 mt-2">
+                <Checkbox
+                  id="burn_after_read"
+                  checked={burnAfterRead}
+                  disabled={submitting}
+                  onCheckedChange={(checked) => {
+                    setExpires(checked ? "b" : "1d");
+                    setBurnAfterRead(checked ? true : false);
+                  }}
+                />
+                <Label
+                  htmlFor="burn_after_read"
+                  className="text-xs cursor-pointer"
+                >
+                  Burn after read
+                </Label>
               </div>
             </div>
-            <Button
-              size="icon"
-              variant="destructive"
-              className="size-4"
-              title="Remove file"
-              onClick={handleRemoveFile}
-            >
-              <XIcon className="size-3" />
-            </Button>
-          </div>
-        ) : (
-          <div
-            className="p-4 border-2 border-dashed rounded-sm relative flex flex-col items-center justify-center"
-            onDrop={handleDrop}
-            onDragOver={(e) => e.preventDefault()}
-          >
-            <input
-              type="file"
-              disabled={submitting}
-              onChange={handleFileChange}
-              className="w-full h-full absolute opacity-0"
-            />
-            <Button type="button" size="icon" className="rounded-full size-7">
-              <PlusIcon className="size-5" />
-            </Button>
-            <div>Add file</div>
-            <p className="text-xs text-muted-foreground">Max file size: 50MB</p>
-          </div>
-        )}
-      </div>
-      <div className="grid grid-cols-2 gap-x-3">
-        <div className="mb-4">
-          <Label className="mb-2">Format</Label>
-          <Select
-            defaultValue={format}
-            onValueChange={(value) => setFormat(value)}
-            disabled={submitting}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a format" />
-            </SelectTrigger>
-            <SelectContent>
-              {editorLanguages.map((l) => (
-                <SelectItem key={l} value={l}>
-                  {l}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="mb-4">
-          <Label className="mb-2" htmlFor="title">
-            Title
-            <span className="text-muted-foreground">(optional)</span>
-          </Label>
-          <Input
-            id="title"
-            type="text"
-            disabled={submitting}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
-        <div className="mb-4">
-          <Label className="mb-2">Expires</Label>
-          <Select
-            value={expires}
-            onValueChange={(value) => {
-              if (value === "b") {
-                setBurnAfterRead(true);
-              }
-              setExpires(value);
-            }}
-            disabled={burnAfterRead || submitting}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a expires" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="b">Burn after read</SelectItem>
-              <SelectItem value="10m">10 minutes</SelectItem>
-              <SelectItem value="30m">30 minutes</SelectItem>
-              <SelectItem value="1h">1 hour</SelectItem>
-              <SelectItem value="6h">6 hours</SelectItem>
-              <SelectItem value="12h">12 hours</SelectItem>
-              <SelectItem value="1d">1 day</SelectItem>
-              <SelectItem value="3d">3 days</SelectItem>
-              <SelectItem value="7d">7 days</SelectItem>
-            </SelectContent>
-          </Select>
-          <div className="flex items-center gap-2 mt-2">
-            <Checkbox
-              id="burn_after_read"
-              checked={burnAfterRead}
-              disabled={submitting}
-              onCheckedChange={(checked) => {
-                setExpires(checked ? "b" : "1d");
-                setBurnAfterRead(checked ? true : false);
-              }}
-            />
-            <Label htmlFor="burn_after_read">Burn after read</Label>
-          </div>
-        </div>
-        <div className="mb-4">
-          <Label className="mb-2" htmlFor="password">
-            Password
-            <span className="text-muted-foreground">(optional)</span>
-          </Label>
-          <div className="flex items-center">
-            <Input
-              id="password"
-              minLength={4}
-              maxLength={12}
-              disabled={submitting}
-              value={password || ""}
-              onChange={(e) => setPassword(e.target.value)}
-              className="rounded-r-none"
-            />
-            <Button
-              type="button"
-              size="icon"
-              disabled={submitting}
-              onClick={() => setPassword(generateId())}
-              className="rounded-l-none"
-            >
-              <RotateCwIcon />
-            </Button>
-          </div>
-          {password && (password.length < 6 || password.length > 12) && (
-            <div className="text-red-500 text-xs mt-1">
-              Password must be 6-12 characters
+
+            <div className="space-y-2">
+              <Label className="text-xs font-medium" htmlFor="password">
+                Password{" "}
+                <span className="text-muted-foreground font-normal">
+                  (optional)
+                </span>
+              </Label>
+              <div className="flex items-center">
+                <Input
+                  id="password"
+                  minLength={4}
+                  maxLength={12}
+                  disabled={submitting}
+                  value={password || ""}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="rounded-r-none"
+                />
+                <Button
+                  type="button"
+                  size="icon"
+                  variant="outline"
+                  disabled={submitting}
+                  onClick={() => setPassword(generateId())}
+                  className="rounded-l-none border-l-0"
+                >
+                  <RotateCwIcon className="size-4" />
+                </Button>
+              </div>
+              {password && (password.length < 6 || password.length > 12) && (
+                <div className="text-destructive text-xs mt-1">
+                  Password must be 6-12 characters
+                </div>
+              )}
             </div>
-          )}
+
+            <div className="pt-2">
+              <Button
+                onClick={handleSubmit}
+                disabled={submitting || (!text && !file)}
+                className="w-full"
+                size="lg"
+              >
+                {submitting ? (
+                  <>
+                    <LoaderCircleIcon className="animate-spin mr-2 size-4" />
+                    Publishing...
+                  </>
+                ) : (
+                  "Publish Paste"
+                )}
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
-      <Button
-        onClick={handleSubmit}
-        disabled={submitting || (!text && !file)}
-        className="w-full lg:w-40"
-      >
-        {submitting ? (
-          <>
-            <LoaderCircleIcon className="animate-spin" />
-            Publishing
-          </>
-        ) : (
-          "Publish"
-        )}
-      </Button>
       <AlertDialog open={isOpenAlertDialog && !!shareLink}>
         <AlertDialogContent>
           <AlertDialogHeader>
