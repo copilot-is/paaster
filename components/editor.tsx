@@ -17,7 +17,10 @@ import { yaml } from "@codemirror/lang-yaml";
 import { Compartment, EditorState, Transaction } from "@codemirror/state";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { basicSetup, EditorView } from "codemirror";
-import { useEffect, useRef } from "react";
+import { Check, Copy } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
+import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
 
@@ -79,6 +82,20 @@ export function Editor({
   const viewRef = useRef<EditorView>(null);
   const languageCompartment = useRef(new Compartment());
   const themeCompartment = useRef(new Compartment());
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    const content = viewRef.current?.state.doc.toString() || value || "";
+    if (!content) return;
+
+    try {
+      await navigator.clipboard.writeText(content);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  };
 
   useEffect(() => {
     if (!editorRef.current) return;
@@ -94,9 +111,13 @@ export function Editor({
       }),
       EditorState.readOnly.of(readOnly),
       EditorView.editable.of(!readOnly),
+      EditorView.lineWrapping,
       EditorView.theme({
         "&": {
           height: "100%",
+        },
+        ".cm-content": {
+          paddingRight: "16px",
         },
       }),
     ];
@@ -162,8 +183,20 @@ export function Editor({
 
   return (
     <div
-      className={cn("rounded-sm overflow-hidden border", className)}
-      ref={editorRef}
-    />
+      className={cn("relative rounded-sm overflow-hidden border", className)}
+    >
+      {(value || (viewRef.current?.state.doc.length ?? 0) > 0) && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute top-2 right-4 z-10 size-8 opacity-60 hover:opacity-100"
+          onClick={handleCopy}
+          type="button"
+        >
+          {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+        </Button>
+      )}
+      <div ref={editorRef} className="h-full" />
+    </div>
   );
 }

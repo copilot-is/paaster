@@ -150,7 +150,7 @@ export default function Page() {
           <div className="bg-card p-4 sm:p-6 flex flex-col rounded-xl shadow-sm border border-border/50">
             <div className="mb-6">
               <Editor
-                className="h-96 rounded-md border border-border/50 overflow-hidden"
+                className="h-[32rem] rounded-md border border-border/50 overflow-hidden"
                 theme={theme}
                 language={format}
                 value={text}
@@ -159,7 +159,7 @@ export default function Page() {
             </div>
             <div>
               {file ? (
-                <div className="p-4 border border-border/50 rounded-xl bg-muted/30 flex items-center justify-between gap-4 transition-colors hover:bg-muted/50">
+                <div className="p-3 border border-border/50 rounded-xl bg-muted/30 flex items-center justify-between gap-4 transition-colors hover:bg-muted/50">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-background rounded-full shadow-sm">
                       <PaperclipIcon className="size-5 text-primary" />
@@ -183,7 +183,7 @@ export default function Page() {
                 </div>
               ) : (
                 <div
-                  className="p-8 border-2 border-dashed border-border/50 rounded-xl relative flex flex-col items-center justify-center gap-2 transition-colors hover:bg-muted/30 hover:border-primary/50"
+                  className="p-3 border-2 border-dashed border-border/50 rounded-xl relative flex flex-col items-center justify-center gap-1 transition-colors hover:bg-muted/30 hover:border-primary/50"
                   onDrop={handleDrop}
                   onDragOver={(e) => e.preventDefault()}
                 >
@@ -193,8 +193,8 @@ export default function Page() {
                     onChange={handleFileChange}
                     className="w-full h-full absolute inset-0 opacity-0 cursor-pointer"
                   />
-                  <div className="p-3 bg-muted/50 rounded-full mb-2">
-                    <PlusIcon className="size-6 text-muted-foreground" />
+                  <div className="p-2 bg-muted/50 rounded-full">
+                    <PlusIcon className="size-4 text-muted-foreground" />
                   </div>
                   <div className="font-medium text-sm">
                     Drop file here or click to upload

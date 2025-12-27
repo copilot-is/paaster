@@ -1,6 +1,6 @@
 "use client";
 
-import { LoaderCircleIcon, PaperclipIcon } from "lucide-react";
+import { DownloadIcon, LoaderCircleIcon, PaperclipIcon } from "lucide-react";
 import { notFound, useParams } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useState } from "react";
@@ -155,34 +155,38 @@ export default function Page() {
                   </AlertTitle>
                 </Alert>
                 <Editor
-                  className="h-110 rounded-md border border-border/50 overflow-hidden"
+                  className="h-[32rem] rounded-md border border-border/50 overflow-hidden"
                   theme={theme}
                   language={data?.format}
                   value={textContent}
                 />
                 {data.attachment && (
                   <div className="mt-6">
-                    <div className="p-6 border border-border/50 rounded-xl bg-muted/30 flex flex-col items-center justify-center transition-colors hover:bg-muted/50">
-                      <div className="flex items-center justify-center gap-2 mb-4">
+                    <div className="p-3 border border-border/50 rounded-xl bg-muted/30 flex items-center justify-between gap-4 transition-colors hover:bg-muted/50">
+                      <div className="flex items-center gap-3">
                         <div className="p-2 bg-background rounded-full shadow-sm">
                           <PaperclipIcon className="size-5 text-primary" />
                         </div>
-                        <div className="font-medium">
-                          {data.attachment.name}
-                        </div>
-                        <div className="text-muted-foreground text-sm bg-background px-2 py-0.5 rounded-full border border-border/50">
-                          <span>{data.attachment.size}</span>
-                          <span className="pl-1">MB</span>
+                        <div className="flex flex-col">
+                          <span className="font-medium text-sm">
+                            {data.attachment.name}
+                          </span>
+                          <span className="text-muted-foreground text-xs">
+                            {data.attachment.size} MB
+                          </span>
                         </div>
                       </div>
                       <Button
-                        className="w-full sm:w-auto min-w-40"
+                        size="icon"
+                        variant="ghost"
+                        className="size-8 hover:bg-primary/10 hover:text-primary rounded-full"
+                        title="Download file"
                         onClick={() =>
                           data.attachment &&
                           handleDownload(data.attachment.name)
                         }
                       >
-                        Download File
+                        <DownloadIcon className="size-4" />
                       </Button>
                     </div>
                   </div>
