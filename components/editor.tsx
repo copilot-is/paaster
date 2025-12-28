@@ -181,21 +181,27 @@ export function Editor({
   }, [theme]);
 
   return (
-    <div
-      className={cn("relative rounded-sm overflow-hidden border", className)}
-    >
-      {(value || (viewRef.current?.state.doc.length ?? 0) > 0) && (
+    <div className={cn("flex flex-col", className)}>
+      {/* Top toolbar with format and copy button */}
+      <div className="flex items-center justify-between px-3 py-2 bg-muted/50 border border-b-0 rounded-t-sm">
+        <span className="text-sm text-muted-foreground font-medium">
+          {language || "plaintext"}
+        </span>
         <Button
           variant="ghost"
           size="icon"
-          className="absolute top-2 right-4 z-10 size-8 opacity-60 hover:opacity-100"
+          className="size-7 opacity-60 hover:opacity-100 disabled:opacity-30 disabled:cursor-not-allowed"
           onClick={handleCopy}
           type="button"
+          disabled={!value && (viewRef.current?.state.doc.length ?? 0) === 0}
         >
           {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
         </Button>
-      )}
-      <div ref={editorRef} className="h-full" />
+      </div>
+      {/* Editor container */}
+      <div className="relative rounded-b-sm overflow-hidden border flex-1 min-h-0">
+        <div ref={editorRef} className="h-full" />
+      </div>
     </div>
   );
 }
